@@ -1,9 +1,9 @@
 package com.jvcdp.model;
 
-import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
-public class AppUser {
+public class AppUser implements Serializable{
 
 	private Long id;
 	private String name;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.jvcdp.common.Utility;
 import com.jvcdp.model.InvalidCredentialsException;
-import com.jvcdp.repository.ApplicationUserRepository;
+import com.jvcdp.repository.LdapAccessRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
-	private ApplicationUserRepository applicationUserRepository;
+	private LdapAccessRepository ldapAccessRepository;
 	
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -27,7 +27,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		Authentication ldapauth = null;
 		String name = authentication.getName();
 		String password = authentication.getCredentials().toString();
-			if(Utility.authenticate(applicationUserRepository, name, password)) {
+			if(ldapAccessRepository.findUser( name, password)) {
 				// use the credentials
 				// and authenticate against the third-party system
 				List<GrantedAuthority> grantedAuths = new ArrayList<GrantedAuthority>();

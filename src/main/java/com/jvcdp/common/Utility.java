@@ -1,14 +1,12 @@
 package com.jvcdp.common;
 import com.jvcdp.model.AppUser;
 import com.jvcdp.model.UserNameNotFoundException;
-import com.jvcdp.repository.ApplicationUserRepository;
 
 import org.springframework.security.core.AuthenticationException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -35,26 +33,5 @@ public class Utility {
             e.printStackTrace();
         }
         return md5;
-    }
-
-    public static boolean authenticate(ApplicationUserRepository applicationUserRepository, String userName, String password) throws AuthenticationException {
-        Iterator<AppUser> it =applicationUserRepository.findAll().iterator();
-
-        while(it.hasNext())
-        {
-            AppUser itm = it.next();
-
-            if(itm.getUserName().equals( userName) ){
-                String salt = itm.getSalt();
-                String hash = Utility.md5Hash(password, salt);
-                if (itm.getPasswordHash().equalsIgnoreCase(hash)) {
-                    return true;
-                }
-            }else{
-                throw new UserNameNotFoundException("Username does not exist in our database!");
-            }
-        }
-
-        return false;
     }
 }
